@@ -1,6 +1,10 @@
 const Sequelize = require('sequelize');
 const { STRING, BOOLEAN, INTEGER } = Sequelize;
-const conn = new Sequelize(process.env.DATABASE_URL || 'postgres://localhost/acme_products_search_db');
+const config = {};
+if(process.env.QUIET){
+  config.logging = false;
+}
+const conn = new Sequelize(process.env.DATABASE_URL || 'postgres://localhost/acme_products_search_db', config);
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
