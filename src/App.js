@@ -1,24 +1,34 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { loginWithToken, fetchProducts, logout } from './store';
+import { loginWithToken, fetchNotes, fetchProducts, logout } from './store';
 import { Link, Routes, Route } from 'react-router-dom';
 import Products from './Products';
 import Login from './Login';
 import Register from './Register';
 import Profile from './Profile';
+import Notes from './Notes';
 
 const App = ()=> {
   const dispatch = useDispatch();
-  const { products, auth } = useSelector(state => state);
+  const { products, auth, notes } = useSelector(state => state);
   useEffect(()=> {
     dispatch(fetchProducts());
     dispatch(loginWithToken());
   }, []);
 
+  useEffect(()=> {
+    if(auth.id){
+      dispatch(fetchNotes());
+    }
+  }, [auth]);
+
   return (
     <div>
       <h1><Link to='/'>Acme Product Search</Link></h1>
       <Link to='/products'>Products ({ products.length })</Link>
+      {
+        !!auth.id && <Link to='/notes'>Notes ({ notes.length })</Link>
+      }
       {
         !auth.id ? <div>
           <Link to='/login'>Login</Link>
@@ -33,6 +43,9 @@ const App = ()=> {
         <Route path='/products' element={ <Products /> } />
         <Route path='/login' element={ <Login /> } />
         <Route path='/register' element={ <Register /> } />
+        {
+          !!auth.id  && <Route path='/notes' element={ <Notes /> } />
+        }
         <Route path='/profile' element={ <Profile /> } />
         <Route path='/products/:filterString' element={ <Products /> } />
       </Routes>

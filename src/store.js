@@ -10,6 +10,13 @@ const products = (state = [], action)=> {
   return state;
 };
 
+const notes = (state = [], action)=> {
+  if(action.type === 'SET_NOTES'){
+    return action.notes;
+  }
+  return state;
+};
+
 const auth = (state = {}, action)=> {
   if(action.type === 'SET_AUTH'){
     return action.auth;
@@ -30,6 +37,14 @@ export const loginWithToken = ()=> {
       const response = await axios.get(`/api/auth/${token}`);
       dispatch({ type: 'SET_AUTH', auth: response.data });
     }
+  };
+};
+
+export const fetchNotes = ()=> {
+  return async(dispatch)=> {
+    const token = window.localStorage.getItem('token');
+    const response = await axios.get(`/api/notes/${token}`);
+    dispatch({ type: 'SET_NOTES', notes: response.data });
   };
 };
 
@@ -70,6 +85,7 @@ export const register = (credentials)=> {
 
 const reducer = combineReducers({
   products,
+  notes,
   auth
 });
 

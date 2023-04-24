@@ -23,6 +23,7 @@ app.get('/api/products', async(req, res, next)=> {
   }
 });
 
+app.use('/api/notes', require('./routes/notes'));
 app.use('/api/auth', require('./routes/auth'));
 
 app.use((err, req, res, next)=> {
