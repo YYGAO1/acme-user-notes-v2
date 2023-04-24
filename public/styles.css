@@ -1,0 +1,18 @@
+body {
+  font-family: verdana;
+}
+form {
+  display: flex;
+  flex-direction: column;
+  border: solid 1px dodgerBlue;
+}
+form > * {
+  margin: 0.5rem;
+}
+input {
+  height: 2rem;
+}
+input[type=checkbox] {
+  height: 1rem;
+  width: 1rem;
+}
