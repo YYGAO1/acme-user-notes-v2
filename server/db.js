@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const { STRING, BOOLEAN, INTEGER } = Sequelize;
+const { TEXT, STRING, BOOLEAN, INTEGER } = Sequelize;
 const config = {};
 if(process.env.QUIET){
   config.logging = false;
@@ -19,6 +19,16 @@ const Product = conn.define('product', {
   }
 });
 
+const Note = conn.define('note', {
+  txt: {
+    type: TEXT
+  },
+  userId: {
+    type: INTEGER,
+    allowNull: false
+  }
+});
+
 const User = conn.define('user', {
   username: {
     type: STRING,
@@ -33,6 +43,8 @@ const User = conn.define('user', {
     defaultValue: 7
   },
 });
+
+Note.belongsTo(User);
 
 User.addHook('beforeSave', async(user)=> {
   if(user.changed('password')){
@@ -80,5 +92,6 @@ User.authenticate = async function(credentials){
 module.exports = {
   Product,
   User,
+  Note,
   conn
 };
